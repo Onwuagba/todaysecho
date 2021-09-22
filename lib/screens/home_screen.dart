@@ -8,58 +8,187 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  PageController pageController = PageController(viewportFraction: 0.9);
   List<String> sections = [
     "All",
     "Policies",
     "Sports",
     "Technology",
     "LifeStyle",
-    "Photography"
-        "Entertainment"
+    "Photography",
+    "Entertainment"
   ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: Text("News", style: TextStyle(color: Colors.black)),
-      ),
-      body: Container(
+    return SafeArea(
+      child: Container(
         height: screenSizeHeight(context),
         width: screenSizeWidth(context),
         child: Column(
           children: [
-            Container(
-              width: screenSizeWidth(context),
-              height: 50,
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: sections.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      sections[index],
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("News Feed",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600)),
+            ),
+            _newsSections(context),
+            Expanded(
+              child: Scrollbar(
+                child: ListView(
+                  children: [
+                    _newsViewFeed(context),
+                    _latestNewsHeader(),
+                    _latestNews()
+                  ],
+                ),
               ),
             ),
-            Container(
-              width: screenSizeWidth(context),
-              height: 200,
-              child: PageView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {},
-              ),
-            )
           ],
         ),
       ),
     );
+  }
+
+  Container _latestNews() {
+    return Container(
+        child: Column(
+      children: data.map((e) {
+        return Container(
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage('assets/images/${e.image}'))),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(right: 5),
+                  height: 95,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        e.title ?? "No Info",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "BY JOHN F. HADDS | 3 min ago",
+                        style: TextStyle(color: Colors.grey, fontSize: 11),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      }).toList(),
+    ));
+  }
+
+  Padding _latestNewsHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Latest News",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+          ),
+          TextButton(onPressed: () {}, child: Text("See More"))
+        ],
+      ),
+    );
+  }
+
+  Container _newsSections(BuildContext context) {
+    return Container(
+      width: screenSizeWidth(context),
+      height: 30,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: sections.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              sections[index],
+              style: TextStyle(fontSize: 17),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Container _newsViewFeed(BuildContext context) {
+    return Container(
+        height: 250,
+        child: PageView.builder(
+          controller: pageController,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return Center(
+              child: Container(
+                padding: EdgeInsets.all(7),
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+                ),
+                height: 240,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 150,
+                      margin: EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage(
+                                  'assets/images/${data[index].image}'))),
+                    ),
+                    Text(
+                      data[index].title ?? "No Title",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "April 16, 2020",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Icon(Icons.bookmark_outline)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ));
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todaysecho/config/palette.dart';
 import 'package:todaysecho/screens/home_screen.dart';
 import 'package:todaysecho/screens/login_screen.dart';
+import 'package:todaysecho/screens/main_screens.dart';
 import 'package:todaysecho/screens/signup_screen.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: textTheme,
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: MainScreens(),
     );
   }
 }
