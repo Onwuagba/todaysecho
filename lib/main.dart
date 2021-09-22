@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todaysecho/config/palette.dart';
+import 'package:todaysecho/config/state_management.dart';
 import 'package:todaysecho/screens/home_screen.dart';
 import 'package:todaysecho/screens/login_screen.dart';
 import 'package:todaysecho/screens/main_screens.dart';
@@ -14,14 +16,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Todays Echo',
-      theme: ThemeData(
-        textTheme: textTheme,
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider<AppProvider>(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Todays Echo',
+        theme: ThemeData(
+          textTheme: textTheme,
+          primarySwatch: Colors.blue,
+        ),
+        home: MainScreens(),
       ),
-      home: MainScreens(),
     );
   }
 }

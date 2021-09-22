@@ -179,7 +179,7 @@ class HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           "April 16, 2020",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Colors.grey, fontSize: 11),
                         ),
                         Icon(Icons.bookmark_outline)
                       ],

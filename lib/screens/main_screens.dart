@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todaysecho/config/palette.dart';
+import 'package:todaysecho/config/state_management.dart';
+import 'package:todaysecho/screens/bookmark_screen.dart';
 import 'package:todaysecho/screens/home_screen.dart';
+import 'package:todaysecho/screens/profile_screen.dart';
 
 class MainScreens extends StatefulWidget {
   MainScreensState createState() => MainScreensState();
@@ -10,29 +14,53 @@ class MainScreensState extends State<MainScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: AlignmentDirectional.bottomCenter,
+      body: Consumer<AppProvider>(builder: (context, app, snapshot) {
+        return Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [app.screen, _navigationBar(context)],
+        );
+      }),
+    );
+  }
+
+  Container _navigationBar(BuildContext context) {
+    AppProvider _appProvider = Provider.of<AppProvider>(context, listen: false);
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.symmetric(horizontal: 25),
+      height: 50,
+      width: screenSizeWidth(context) - 100,
+      decoration: BoxDecoration(
+        color: Color(0xe3ffffff),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          HomeScreen(),
-          Container(
-            margin: EdgeInsets.only(bottom: 15),
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            height: 50,
-            width: screenSizeWidth(context) - 100,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-              boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 2)],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.home_outlined),
-                Icon(Icons.bookmark_outline),
-                Icon(Icons.person_outline)
-              ],
-            ),
-          )
+          IconButton(
+            icon: Icon(_appProvider.screen.toString() == "HomeScreen"
+                ? Icons.home
+                : Icons.home_outlined),
+            onPressed: () {
+              _appProvider.changeScreen(HomeScreen());
+            },
+          ),
+          IconButton(
+            icon: Icon(_appProvider.screen.toString() == "BookMarkScreen"
+                ? Icons.bookmark
+                : Icons.bookmark_outline),
+            onPressed: () {
+              _appProvider.changeScreen(BookMarkScreen());
+            },
+          ),
+          IconButton(
+            icon: Icon(_appProvider.screen.toString() == "ProfileScreen"
+                ? Icons.person
+                : Icons.person_outline),
+            onPressed: () {
+              _appProvider.changeScreen(ProfileScreen());
+            },
+          ),
         ],
       ),
     );
