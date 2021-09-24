@@ -15,8 +15,7 @@ class MainScreensState extends State<MainScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<AppProvider>(builder: (context, app, snapshot) {
-        return Stack(
-          alignment: AlignmentDirectional.bottomCenter,
+        return Column(
           children: [app.screen, _navigationBar(context)],
         );
       }),
@@ -26,13 +25,11 @@ class MainScreensState extends State<MainScreens> {
   Container _navigationBar(BuildContext context) {
     AppProvider _appProvider = Provider.of<AppProvider>(context, listen: false);
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      padding: EdgeInsets.symmetric(horizontal: 25),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       height: 50,
-      width: screenSizeWidth(context) - 100,
+      width: screenSizeWidth(context),
       decoration: BoxDecoration(
         color: Color(0xe3ffffff),
-        borderRadius: BorderRadius.all(Radius.circular(25)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,6 +42,7 @@ class MainScreensState extends State<MainScreens> {
               _appProvider.changeScreen(HomeScreen());
             },
           ),
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
             icon: Icon(_appProvider.screen.toString() == "BookMarkScreen"
                 ? Icons.bookmark

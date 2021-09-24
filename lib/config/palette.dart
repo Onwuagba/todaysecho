@@ -10,7 +10,7 @@ double screenSizeWidth(BuildContext context) {
 
 ButtonStyle verificationButton(BuildContext context) {
   return TextButton.styleFrom(
-    fixedSize: Size(screenSizeWidth(context) - 60, 55),
+    fixedSize: Size(screenSizeWidth(context) - 40, 55),
     backgroundColor: Colors.black,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

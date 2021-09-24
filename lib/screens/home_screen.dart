@@ -11,44 +11,141 @@ class HomeScreenState extends State<HomeScreen> {
   PageController pageController = PageController(viewportFraction: 0.9);
   List<String> sections = [
     "All",
+    "Business",
     "Policies",
     "Sports",
-    "Technology",
+    "Entertainment",
     "LifeStyle",
+    "Technology",
     "Photography",
-    "Entertainment"
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        height: screenSizeHeight(context),
-        width: screenSizeWidth(context),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("News Feed",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600)),
+    return Expanded(
+      child: Column(
+        children: [
+          _header(),
+          _newsSections(context),
+          Expanded(
+            child: Scrollbar(
+              child: SingleChildScrollView(
+                  child: Column(
+                children: [
+                  _newsViewFeed(context),
+                  _latestNewsHeader(),
+                  _latestNews()
+                ],
+              )),
             ),
-            _newsSections(context),
-            Expanded(
-              child: Scrollbar(
-                child: ListView(
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _header() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, bottom: 10),
+      child: Image(
+        image: AssetImage("assets/images/todays_echo.png"),
+        height: 50,
+      ),
+    );
+  }
+
+  Container _newsSections(BuildContext context) {
+    return Container(
+      width: screenSizeWidth(context),
+      height: 20,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: sections.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              sections[index],
+              style: TextStyle(fontSize: 17),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Container _newsViewFeed(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 10),
+        height: 260,
+        child: PageView.builder(
+          controller: pageController,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return Center(
+              child: Container(
+                padding: EdgeInsets.all(7),
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+                ),
+                height: 250,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _newsViewFeed(context),
-                    _latestNewsHeader(),
-                    _latestNews()
+                    Container(
+                      height: 160,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage(
+                                  'assets/images/${data[index].image}'))),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        data[index].title ?? "No Title",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "April 16, 2020",
+                          style: TextStyle(color: Colors.grey, fontSize: 11),
+                        ),
+                        Icon(Icons.bookmark_outline)
+                      ],
+                    )
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
+            );
+          },
+        ));
+  }
+
+  Padding _latestNewsHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Latest News",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+          ),
+          TextButton(onPressed: () {}, child: Text("See More"))
+        ],
       ),
     );
   }
@@ -97,98 +194,5 @@ class HomeScreenState extends State<HomeScreen> {
         );
       }).toList(),
     ));
-  }
-
-  Padding _latestNewsHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Latest News",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
-          ),
-          TextButton(onPressed: () {}, child: Text("See More"))
-        ],
-      ),
-    );
-  }
-
-  Container _newsSections(BuildContext context) {
-    return Container(
-      width: screenSizeWidth(context),
-      height: 30,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: sections.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              sections[index],
-              style: TextStyle(fontSize: 17),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Container _newsViewFeed(BuildContext context) {
-    return Container(
-        height: 250,
-        child: PageView.builder(
-          controller: pageController,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return Center(
-              child: Container(
-                padding: EdgeInsets.all(7),
-                margin: EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
-                ),
-                height: 240,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 150,
-                      margin: EdgeInsets.only(bottom: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage(
-                                  'assets/images/${data[index].image}'))),
-                    ),
-                    Text(
-                      data[index].title ?? "No Title",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "April 16, 2020",
-                          style: TextStyle(color: Colors.grey, fontSize: 11),
-                        ),
-                        Icon(Icons.bookmark_outline)
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-        ));
   }
 }

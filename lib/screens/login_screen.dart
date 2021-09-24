@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todaysecho/config/palette.dart';
+import 'package:todaysecho/screens/signup_screen.dart';
 
 class LogInScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -18,15 +19,14 @@ class LogInScreen extends StatelessWidget {
         child: Center(
           child: Container(
             height: screenSizeHeight(context),
-            padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Spacer(flex: 2),
                 Text(
                   "Login",
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 50),
                 TextField(
@@ -56,7 +56,14 @@ class LogInScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don't have any account?"),
-                    TextButton(onPressed: null, child: Text("Sign Up"))
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()));
+                        },
+                        child: Text("Sign Up"))
                   ],
                 )
               ],
