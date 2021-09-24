@@ -4,8 +4,7 @@ import 'package:todaysecho/config/palette.dart';
 import 'package:todaysecho/screens/login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  final TextEditingController _firstnameController = TextEditingController();
-  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmpasswordController =
@@ -31,10 +30,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 signUpTextField(
-                    controller: _firstnameController, title: "firstname"),
-                SizedBox(height: 20),
-                signUpTextField(
-                    controller: _lastnameController, title: "lastname"),
+                    controller: _usernameController, title: "username"),
                 SizedBox(height: 20),
                 signUpTextField(controller: _emailController, title: "email"),
                 SizedBox(height: 20),
