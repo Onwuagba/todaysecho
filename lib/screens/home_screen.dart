@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todaysecho/config/data_config.dart';
 import 'package:todaysecho/config/palette.dart';
+import 'package:todaysecho/screens/news_view.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +20,15 @@ class HomeScreenState extends State<HomeScreen> {
     "Technology",
     "Photography",
   ];
+
+  _showNewsInfo(Data _data) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewsView(
+                  data: _data,
+                )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +106,26 @@ class HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 160,
+                      width: double.infinity,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage(
-                                  'assets/images/${data[index].image}'))),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      child: Hero(
+                        tag: data[index].image ?? "No name",
+                        child: GestureDetector(
+                          onTap: () {
+                            _showNewsInfo(data[index]);
+                          },
+                          child: Image(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                                'assets/images/${data[index].image}'),
+                            height: 160,
+                          ),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),

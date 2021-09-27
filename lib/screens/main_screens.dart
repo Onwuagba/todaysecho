@@ -25,11 +25,12 @@ class MainScreensState extends State<MainScreens> {
   Container _navigationBar(BuildContext context) {
     AppProvider _appProvider = Provider.of<AppProvider>(context, listen: false);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 25),
       height: 50,
-      width: screenSizeWidth(context),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Color(0xe3ffffff),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
