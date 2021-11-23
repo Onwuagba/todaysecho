@@ -21,15 +21,6 @@ class HomeScreenState extends State<HomeScreen> {
     "Photography",
   ];
 
-  _showNewsInfo(Data _data) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => NewsView(
-                  data: _data,
-                )));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,7 +36,19 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Navigation(sections: sections),
-              Content(),
+              FutureBuilder<List<ContentData>>(
+                  future: getNewsContent(),
+                  builder: (ontext, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasData) {
+                      return Content(
+                        contentData: snapshot.data,
+                      );
+                    } else {
+                      return Expanded(child: Text("Encountered an error"));
+                    }
+                  }),
             ],
           ),
         ),
@@ -82,56 +85,69 @@ class Navigation extends StatelessWidget {
 }
 
 class Content extends StatelessWidget {
-  const Content({
-    Key? key,
-  }) : super(key: key);
+  final List<ContentData>? contentData;
+  const Content({Key? key, required this.contentData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _showNewsInfo(ContentData _data) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NewsView(
+                    data: _data,
+                  )));
+    }
+
     return Expanded(
       child: ListView(
-        children: data
-            .map((e) => Column(
-                  children: [
-                    Container(
-                      alignment: Alignment(-1, 1),
-                      width: MediaQuery.of(context).size.width,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage('assets/images/${e.image}'))),
-                      child: Container(
-                        padding: EdgeInsets.all(10),
+        children: contentData!
+            .map((e) => GestureDetector(
+                  onTap: () {
+                    _showNewsInfo(e);
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment(-1, 1),
+                        width: MediaQuery.of(context).size.width,
+                        height: 270,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                              Color(0x00000000),
-                              Color(0x80000000),
-                            ])),
-                        child: Text(
-                          e.title ?? "",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(e.urlImage))),
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                Color(0x00000000),
+                                Color(0x80000000),
+                              ])),
+                          child: Text(
+                            e.title ?? "",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              onPressed: null, icon: Icon(Icons.favorite)),
-                          IconButton(
-                              onPressed: null, icon: Icon(Icons.bookmark))
-                        ],
-                      ),
-                    )
-                  ],
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: null, icon: Icon(Icons.favorite)),
+                            IconButton(
+                                onPressed: null, icon: Icon(Icons.bookmark))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ))
             .toList(),
       ),

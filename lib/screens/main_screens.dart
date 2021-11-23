@@ -33,6 +33,7 @@ class MainScreensState extends State<MainScreens> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
+            splashRadius: 1,
             icon: Icon(_appProvider.screen.toString() == "HomeScreen"
                 ? Icons.home
                 : Icons.home_outlined),
@@ -42,6 +43,7 @@ class MainScreensState extends State<MainScreens> {
           ),
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
+            splashRadius: 1,
             icon: Icon(_appProvider.screen.toString() == "BookMarkScreen"
                 ? Icons.bookmark
                 : Icons.bookmark_outline),
@@ -50,6 +52,7 @@ class MainScreensState extends State<MainScreens> {
             },
           ),
           IconButton(
+            splashRadius: 1,
             icon: Icon(_appProvider.screen.toString() == "ProfileScreen"
                 ? Icons.person
                 : Icons.person_outline),

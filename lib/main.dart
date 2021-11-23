@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:todaysecho/config/palette.dart';
 import 'package:todaysecho/config/state_management.dart';
@@ -7,9 +8,10 @@ import 'package:todaysecho/screens/login_screen.dart';
 import 'package:todaysecho/screens/main_screens.dart';
 import 'package:todaysecho/screens/signup_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 

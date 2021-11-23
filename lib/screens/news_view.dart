@@ -4,7 +4,7 @@ import "package:flutter/material.dart";
 import 'package:todaysecho/config/data_config.dart';
 
 class NewsView extends StatelessWidget {
-  final Data? data;
+  final ContentData? data;
   NewsView({this.data});
 
   @override
@@ -21,9 +21,8 @@ class NewsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _category(),
-                _header(),
                 _newsImage(),
+                _header(),
                 _bookmarkAndAuthor(),
                 _information(),
               ],
@@ -33,11 +32,6 @@ class NewsView extends StatelessWidget {
       ),
     );
   }
-
-  Padding _category() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Text(data?.category ?? "No category"),
-      );
 
   Padding _header() {
     return Padding(
@@ -52,12 +46,12 @@ class NewsView extends StatelessWidget {
 
   Hero _newsImage() {
     return Hero(
-      tag: data?.image ?? "No tag",
+      tag: data?.urlImage ?? "No tag",
       child: Image(
         fit: BoxFit.fill,
-        image: AssetImage("assets/images/${data?.image}"),
+        image: NetworkImage(data?.urlImage),
         width: double.infinity,
-        height: 200,
+        height: 250,
       ),
     );
   }
@@ -68,7 +62,7 @@ class NewsView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Author"),
+          Text("by ${data?.author}"),
           Icon(Icons.bookmark_outline),
         ],
       ),

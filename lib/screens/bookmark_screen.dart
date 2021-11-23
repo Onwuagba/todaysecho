@@ -7,6 +7,6 @@ class BookMarkScreen extends StatefulWidget {
 class BookMarkState extends State<BookMarkScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Expanded(child: Container());
   }
 }

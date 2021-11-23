@@ -1,34 +1,44 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:todaysecho/config/contents.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
-class Data {
-  final String? content, category, image, title;
-  Data({this.content, this.category, this.image, this.title});
+class ContentData {
+  final String? content, publishedAt, title, author;
+  final urlImage;
+
+  ContentData(
+      {required this.content,
+      required this.publishedAt,
+      required this.title,
+      required this.author,
+      required this.urlImage});
+
+  factory ContentData.fromJson(Map<String, dynamic> json) {
+    return ContentData(
+        content: json['content'],
+        publishedAt: json['publishedAt'],
+        urlImage: json['urlToImage'],
+        author: json['author'],
+        title: json['title']);
+  }
 }
 
-List<Data> data = [
-  Data(
-    content: psg,
-    category: "Sports",
-    image: "psg.jpg",
-    title: "Rothen: \"Now I think signing Ramos was a bad idea for PSG\"",
-  ),
-  Data(
-    content: prison,
-    category: "Politices",
-    image: "prison.jpg",
-    title: "Mass Prison Break as Hundreds of Inmates Escape",
-  ),
-  Data(
-    content: fox,
-    category: "Entertainment",
-    image: "fox.jpg",
-    title: "Megan Fox Brought Back the Naked Look at the VMAs",
-  ),
-  Data(
-    content: friends,
-    category: "Entertainment",
-    image: "friends.jpg",
-    title:
-        "Jennifer Aniston Responds to David Schwimmer Dating Rumors and 'Friends' Reunion's Emmy Noms (Exclusive)",
-  )
-];
+Future<List<ContentData>> getNewsContent() async {
+  var url = Uri.parse(
+      "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=${dotenv.env['apiKey']}");
+  try {
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      return (responseJson['articles'] as List)
+          .map((p) => ContentData.fromJson(p))
+          .toList();
+    } else {
+      throw Exception("Could not get contents");
+    }
+  } catch (e) {
+    throw Exception();
+  }
+}
