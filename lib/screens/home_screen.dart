@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todaysecho/config/data_config.dart';
 import 'package:todaysecho/config/palette.dart';
+import 'package:todaysecho/config/state_management.dart';
 import 'package:todaysecho/screens/news_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -89,6 +91,7 @@ class Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppProvider _appProvider = Provider.of<AppProvider>(context, listen: false);
     _showNewsInfo(ContentData _data) {
       Navigator.push(
           context,
@@ -140,9 +143,13 @@ class Content extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: null, icon: Icon(Icons.favorite)),
+                                onPressed: null,
+                                icon: Icon(Icons.favorite_outline)),
                             IconButton(
-                                onPressed: null, icon: Icon(Icons.bookmark))
+                                onPressed: () {
+                                  _appProvider.addToBookmark(e);
+                                },
+                                icon: Icon(Icons.bookmark_outline))
                           ],
                         ),
                       )

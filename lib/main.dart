@@ -24,6 +24,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Todays Echo',
         theme: ThemeData(
+          canvasColor: Colors.white,
+          backgroundColor: Colors.white,
           textTheme: textTheme,
           primarySwatch: Colors.blue,
         ),

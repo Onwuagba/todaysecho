@@ -31,5 +31,5 @@ TextTheme textTheme = TextTheme(
   caption: TextStyle(color: Colors.black),
 );
 
-final headerStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.w700);
+final headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.w700);
 final hightlightFont = TextStyle(color: Colors.white, fontSize: 18);
