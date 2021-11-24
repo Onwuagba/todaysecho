@@ -9,7 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  PageController pageController = PageController(viewportFraction: 0.9);
   List<String> sections = [
     "All",
     "Business",
@@ -68,7 +67,7 @@ class Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: screenWidth(context),
         height: 40,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -110,13 +109,14 @@ class Content extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment(-1, 1),
-                        width: MediaQuery.of(context).size.width,
-                        height: 270,
+                        width: screenWidth(context),
+                        height: 250,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(e.urlImage))),
                         child: Container(
+                          width: screenWidth(context),
                           padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -128,12 +128,12 @@ class Content extends StatelessWidget {
                               ])),
                           child: Text(
                             e.title ?? "",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: hightlightFont,
                           ),
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: screenWidth(context),
                         height: 40,
                         color: Colors.white,
                         child: Row(

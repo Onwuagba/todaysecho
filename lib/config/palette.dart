@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-double screenSizeHeight(BuildContext context) {
+double screenHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }
 
-double screenSizeWidth(BuildContext context) {
+double screenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
 }
 
 ButtonStyle verificationButton(BuildContext context) {
   return TextButton.styleFrom(
-    fixedSize: Size(screenSizeWidth(context) - 40, 55),
+    fixedSize: Size(screenWidth(context) - 40, 55),
     backgroundColor: Colors.black,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -30,3 +30,6 @@ TextTheme textTheme = TextTheme(
   headline6: TextStyle(color: Colors.black),
   caption: TextStyle(color: Colors.black),
 );
+
+final headerStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.w700);
+final hightlightFont = TextStyle(color: Colors.white, fontSize: 18);
